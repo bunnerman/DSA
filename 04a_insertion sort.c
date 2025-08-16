@@ -21,7 +21,7 @@ int main()
 	{
 		j = i - 1;
 		temp = ary[i];
-		while (ary[j] >= temp && j >= 0)
+		while (ary[j] >= temp && j > 0)
 		{
 			ary[j + 1] = ary[j];
 			j--;
