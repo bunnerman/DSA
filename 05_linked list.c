@@ -126,7 +126,7 @@ void newNodeAfter(int val, struct node **head, int num)
     ptr->nxt = newPtr;
 }
 
-void delHead(struct node **head)
+void delNodeHead(struct node **head)
 {
     if (*head == NULL) 
         return;
@@ -135,7 +135,7 @@ void delHead(struct node **head)
     free(t);
 }
 
-void delTail(struct node **head)
+void delNodeTail(struct node **head)
 {
     if (*head == NULL)
         return;
@@ -152,13 +152,13 @@ void delTail(struct node **head)
     ptr->nxt = NULL;
 }
 
-void delAt(struct node **head, int index)
+void delNodeAt(struct node **head, int index)
 {
     if (*head == NULL)
         return;
     if (index <= 0)
     {
-        delHead(head);
+        delNodeHead(head);
         return;
     }
     struct node *ptr = *head;
@@ -175,6 +175,61 @@ void delAt(struct node **head, int index)
     free(tmp);
 }
 
+void delNodeBefore(struct node **head, int num)
+{
+    struct node *ptr = *head;
+    struct node *prv = NULL;
+    
+    if (*head == NULL || (*head)->nxt == NULL) 
+    {
+        printf("No node exists before %d\n", num);
+        return;
+    }
+    if (ptr->data == num) 
+    {
+        printf("No node exists before %d\n", num);
+        return;
+    }
+    if (ptr->nxt->data == num) 
+    {
+        struct node *temp = *head;
+        *head = (*head)->nxt;
+        free(temp);
+        return;
+    }
+    while (ptr->nxt != NULL && ptr->nxt->data != num) 
+    {
+        prv = ptr;
+        ptr = ptr->nxt;
+    }
+    if (ptr->nxt == NULL) 
+    {
+        printf("Node with data %d not found\n", num);
+        return;
+    }
+    if (prv != NULL) 
+    {
+        prv->nxt = ptr->nxt;
+        free(ptr);
+    }
+}
+
+void delNodeAfter(struct node **head, int num)
+{
+    if (*head == NULL) return;
+
+    struct node *ptr = *head;
+    while (ptr != NULL && ptr->data != num)
+        ptr = ptr->nxt;
+
+    if (ptr == NULL || ptr->nxt == NULL) return;
+
+    struct node *temp = ptr->nxt;
+    ptr->nxt = temp->nxt;
+    free(temp);
+}
+
+
 int searchNode(struct node *head, int val)
 {
     int index = 0;
@@ -188,7 +243,22 @@ int searchNode(struct node *head, int val)
     return -1; // less than 0 to show no index found
 }
 
-void displayList(struct node* ptr)  
+void mergeLists(struct node *h1, struct node **h2)
+{
+    if (h1 == NULL)
+    {
+        printf("PLEASE ENTER ELEMENTS INTO FIRST LIST!!!!!!!\n");
+        return;
+    }
+    struct node *ptr = h1;
+    while (ptr->nxt != NULL)
+        ptr = ptr->nxt;
+
+    ptr->nxt = *h2;
+    *h2 = NULL;
+}
+
+void displayList(struct node *ptr)  
 {
     printf("\nList-\n");
     while (ptr != NULL)
@@ -204,8 +274,17 @@ int main()
     int ch;
     int val;
     int index;
+    int listMergeFlag = 0;
     struct node *head = NULL;
     
+    // Second List to show merging concept and function
+    struct node *head2 = NULL;
+    head2 = malloc(sizeof(struct node));
+    head2->data = 111;
+    head2->nxt = malloc(sizeof(struct node));
+    (head2->nxt)->data = 222;
+    (head2->nxt)->nxt = NULL;
+
     mainMenu:
     printf("<----------------Menu---------------->\n");
     printf("0. Exit\n");
@@ -213,6 +292,13 @@ int main()
     printf("2. View List\n");
     printf("3. Delete Node\n");
     printf("4. Search\n");
+    if (!listMergeFlag) //` If list is merged, don't show this menu again
+    {
+        printf("5. View Second List ([111], [222] are the only elements taken for example)\n");
+        printf("6. Merge Second List's Head to First List's Tail\n");
+        printf("7. Merge First List's Head to Second List's Tail\n");
+    }
+
     scanf("%d", &ch);
     switch(ch)
     {
@@ -238,6 +324,38 @@ int main()
             printf("Number found at: [%d] (-1 if not found)\n", searchNode(head, index));
             goto mainMenu;
             break;
+        case 5:
+            if (!listMergeFlag) 
+            {
+                displayList(head2);
+                break;
+                goto mainMenu;
+            }
+            printf("List Operations have been performed already\n");
+            goto mainMenu;
+            break;
+        case 6:
+            if (!listMergeFlag) 
+            {
+                mergeLists(head, &head2);
+                listMergeFlag = 1;
+                goto mainMenu;
+                break;
+            }
+            printf("List Operations have been performed already\n");
+            goto mainMenu;
+            break;
+        case 7:
+            if (!listMergeFlag) 
+            {
+                mergeLists(head2, &head);
+                listMergeFlag = 1;
+                goto mainMenu;
+                break;
+            }
+            printf("List Operations have been performed already\n");
+            goto mainMenu;
+            break;        
         default:
             printf("\nINVALID INPUT, TRY AGAIN\n\n");
             goto mainMenu;
@@ -280,17 +398,16 @@ int main()
             printf("Value: ");
             scanf("%d", &val);
             printf("Number: ");
-            scanf("%d", &index); // repurposed var
+            scanf("%d", &index); // repurposed for number
             newNodeBefore(val, &head, index);
             break;
         case 5:
             printf("Value: ");
             scanf("%d", &val);
             printf("Number: ");
-            scanf("%d", &index); // repurposed var
+            scanf("%d", &index); // repurposed for number
             newNodeAfter(val, &head, index);
             break;
-        
         default: 
             printf("\nINVALID INPUT, TRY AGAIN\n\n");
             break;
@@ -303,21 +420,33 @@ int main()
     printf("1. Delete at Head\n");
     printf("2. Delete at Tail\n");
     printf("3. Delete at Index\n");
+    printf("4. Delete before Number\n");
+    printf("5. Delete after Number\n");
     scanf("%d", &ch);
     switch(ch)
     {
         case 0:
             goto mainMenu;
         case 1:
-            delHead(&head);
+            delNodeHead(&head);
             break;
         case 2:
-            delTail(&head);
+            delNodeTail(&head);
             break;
         case 3:
             printf("Index: ");
             scanf("%d", &index);
-            delAt(&head, index);
+            delNodeAt(&head, index);
+            break;
+        case 4:
+            printf("Number: ");
+            scanf("%d", &index); // repurposed for number
+            delNodeBefore(&head, index);
+            break;
+        case 5:
+            printf("Number: ");
+            scanf("%d", &index); // repurposed for number
+            delNodeAfter(&head, index);
             break;
         default:
             printf("\nINVALID INPUT, TRY AGAIN\n");
