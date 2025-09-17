@@ -8,8 +8,8 @@ void stkPush(int *stk, int *top, int val)
         printf("STACK OVERFLOW DETECTED! Push Fail\n");
         return; 
     }
-    else
-        stk[++(*top)] = val;
+
+    stk[++(*top)] = val;
     printf("Push Successful\n");
     return;
 }
@@ -21,8 +21,8 @@ void stkPop(int *stk, int *top)
         printf("NO ELEMENTS INSERTED! Pop Fail\n");
         return;
     }
-    else
-        (*top)--;
+    
+    (*top)--;
     printf("Pop Successful\n");
     return;
 }
@@ -34,18 +34,18 @@ void stkPeek(int *stk, int *top)
         printf("NO ELEMENTS INSERTED! Peek Fail\n");
         return;
     }
-    else
-        printf("Peek: %d\n", stk[*top]);
+     
+    printf("Peek: %d\n", stk[*top]);
     return;
 }
 
 int main()
 {
     int stk[10];
-    int *top;
+    int *top = malloc(sizeof(int));
     *top = -1;
     int val;
-    int ch;
+    int choice;
 
     printf("NOTE: MAX SIZE OF STACK IS 10\n");
     mainMenu:
@@ -56,9 +56,9 @@ int main()
     printf("3. Peek\n");
     printf("4. Size\n");
     printf("5. Full/Empty\n");
-    scanf("%d", &ch);
+    scanf("%d", &choice);
 
-    switch(ch)
+    switch(choice)
     {
         case 0:
             return 0;
@@ -77,12 +77,13 @@ int main()
             printf("Size is %d\n", *top + 1);
             break;
         case 5:
-            if (top = 9)
+            if (*top == 9)
                 printf("Stack is full\n");
-            else if (top < 0)
-                printf("Stack is empty\n);
+            else if (*top < 0)
+                printf("Stack is empty\n");
             else
                 printf("Stack is partially filled\n");
+            break;
         default:
             printf("INVALID CHOICE OF INTEGER! Choose Again\n");
             goto mainMenu;
