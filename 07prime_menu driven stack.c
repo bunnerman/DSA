@@ -55,6 +55,7 @@ int main()
     printf("2. Pop\n");
     printf("3. Peek\n");
     printf("4. Size\n");
+    printf("5. Full/Empty\n");
     scanf("%d", &ch);
 
     switch(ch)
@@ -75,6 +76,13 @@ int main()
         case 4:
             printf("Size is %d\n", *top + 1);
             break;
+        case 5:
+            if (top = 9)
+                printf("Stack is full\n");
+            else if (top < 0)
+                printf("Stack is empty\n);
+            else
+                printf("Stack is partially filled\n");
         default:
             printf("INVALID CHOICE OF INTEGER! Choose Again\n");
             goto mainMenu;
