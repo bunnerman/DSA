@@ -5,7 +5,7 @@ void qqeInsert(int *qqe, int *frnt, int *rr, int val)
 {
     if (*frnt == -1)
         *frnt = 0;
-    if (*rr < 10)
+    if (*rr < 9)
     {
         qqe[++*(rr)] = val;
         printf("Insertion Successful\n");
@@ -37,7 +37,7 @@ void qqeDisplay(int *qqe, int *frnt, int *rr)
             printf("%d ", qqe[i]);
     else
         printf("NO ELEMENTS INSERTED! Displaying Failed\n");
-    printf("\nEmpty Spaces (-1 if none inserted yet)- %d\n", *frnt);
+    printf("\nEmpty Spaces (-1 if none inserted yet): %d\n", *frnt);
 }
 
 int main()
