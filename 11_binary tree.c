@@ -29,22 +29,34 @@ void displayNodeData(struct node *currentNode)
 		printf("Parent: NULL (root node)\n\n");
 }
 
-void inorderTraversal()
+void traverseLeft(struct node* currentNode)
 {
-	struct node* currentNode = root;
-	int stack[100]; // Large Enough
-	while (1)
+	while (currentNode->left != NULL)
+		currentNode = currentNode->left;
+}
+
+void traverseRight(struct node* currentNode)
+{
+	if (currentNode->right != NULL)
+		currentNode = currentNode->right;
+	else
+		currentNode = currentNode->back;
+}
+
+void printNode(struct node* currentNode)
+{
+	printf("%d ", currentNode->data);
+}
+
+void inorderTraversal(struct node* currentNode)
+{
+	if (currentNode == NULL)
 	{
-		if (currentNode->left == NULL)
-		{
-			if (currentNode->right == NULL)
-				currentNode = currentNode->right;
-			else
-				currentNode = currentNode->back;
-		}
-		else
-			currentNode = currentNode->left;
+		return;
 	}
+	inorderTraversal(currentNode->left);
+	printf("%d ", currentNode->data);
+	inorderTraversal(currentNode->right);	
 }
 
 void freeNav()
@@ -88,7 +100,10 @@ void freeNav()
 		}
 		else if (ch == 'B')
 		{
-			currentNode = currentNode->back;
+			if (currentNode->back == NULL)
+				printf("Back Navigation Failed, already at root node\n");
+			else
+				currentNode = currentNode->back;
 			continue;
 		}
 		else if (ch == 'S')
@@ -150,7 +165,7 @@ int main()
 				printf("WIP\n");
 				break;
 			case 3:
-				printf("WIP\n");
+				inorderTraversal(root);
 				break;
 			case 4:
 				printf("WIP\n");
