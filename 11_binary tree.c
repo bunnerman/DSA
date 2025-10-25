@@ -29,6 +29,8 @@ void displayNodeData(struct node *currentNode)
 		printf("Parent: NULL (root node)\n\n");
 }
 
+//? Legacy Code - These code blocks were used when I attempted to use iterative approach but gave up as it was too complex
+/*
 void traverseLeft(struct node* currentNode)
 {
 	while (currentNode->left != NULL)
@@ -47,6 +49,7 @@ void printNode(struct node* currentNode)
 {
 	printf("%d ", currentNode->data);
 }
+*/
 
 void inorderTraversal(struct node* currentNode)
 {
@@ -57,6 +60,24 @@ void inorderTraversal(struct node* currentNode)
 	inorderTraversal(currentNode->left);
 	printf("%d ", currentNode->data);
 	inorderTraversal(currentNode->right);	
+}
+
+void preorderTraversal(struct node* currentNode)
+{
+    if (currentNode == NULL) 
+		return;
+    printf("%d ", currentNode->data);
+    preorderTraversal(currentNode->left);
+    preorderTraversal(currentNode->right);
+}
+
+void postorderTraversal(struct node* currentNode)
+{
+	if (currentNode == NULL)
+		return;
+	postorderTraversal(currentNode->left);
+	postorderTraversal(currentNode->right);
+	printf("%d ", currentNode->data);
 }
 
 void freeNav()
@@ -145,10 +166,9 @@ int main()
 	printf("\tS - Stop Free Navigation\n");
 	printf("\tD - Delete Node\n");
 	printf("\tB - Previous Node\n");
-	printf("2. Full Display\n");
-	printf("3. In-Order Display\n");
-	printf("4. Pre-Order Display\n");
-	printf("5. Post-Order Display\n");
+	printf("2. In-Order Display\n");
+	printf("3. Pre-Order Display\n");
+	printf("4. Post-Order Display\n");
 
 	do 
 	{
@@ -162,16 +182,16 @@ int main()
 				freeNav();
 				break;
 			case 2:
-				printf("WIP\n");
+				inorderTraversal(root);
+				printf("\n");
 				break;
 			case 3:
-				inorderTraversal(root);
+				preorderTraversal(root);
+				printf("\n");
 				break;
 			case 4:
-				printf("WIP\n");
-				break;
-			case 5:
-				printf("WIP\n");
+				postorderTraversal(root);
+				printf("\n");
 				break;
 			default: 
 				printf("Wrong Option Chosen\n");
