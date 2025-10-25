@@ -54,9 +54,7 @@ void printNode(struct node* currentNode)
 void inorderTraversal(struct node* currentNode)
 {
 	if (currentNode == NULL)
-	{
 		return;
-	}
 	inorderTraversal(currentNode->left);
 	printf("%d ", currentNode->data);
 	inorderTraversal(currentNode->right);	
