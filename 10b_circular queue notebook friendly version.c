@@ -82,7 +82,7 @@ void queueDelete()
     }
     else if (front == rear)
         front = rear = -1;
-    else if (front == MAXSIZE - 1 && rear > 0) 
+    else if (front == MAXSIZE - 1 && rear >= 0) 
         front = 0;
     else
         front++;
