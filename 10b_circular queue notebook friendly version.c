@@ -6,7 +6,7 @@ void queueDelete();
 void queueDisplay();
 
 // Global variables and MACRO for convenience
-#define MAXSIZE 10
+#define MAXSIZE 5
 int queue[MAXSIZE];
 int front = -1;
 int rear = -1;
@@ -68,8 +68,6 @@ void queueInsert(int val)
         rear = -1;
         queue[++rear] = val;
     }
-    else if (rear == front - 2 || (rear == MAXSIZE - 2 && front == 0))
-        queue[++rear] = val;
     else
         queue[++rear] = val;
     printf("Insertion Sucessful\n");
